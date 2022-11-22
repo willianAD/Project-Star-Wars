@@ -2,12 +2,14 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 export default function Table() {
-  const { data, name } = useContext(AppContext);
+  const { handleName, filterPlanet } = useContext(AppContext);
+  // const [filterPlanet, setFilters] = useState([]);
+
   return (
     <>
+      <h1>Projeto Star Wars Trybe</h1>
       <label htmlFor="name">
-        <input id="name" />
-        { name }
+        <input id="name" data-testid="name-filter" onChange={ handleName } />
       </label>
       <table>
         <thead>
@@ -28,7 +30,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          { data.map((e) => (
+          { filterPlanet.map((e) => (
             <tr key={ e.name }>
               <td>{ e.name }</td>
               <td>{ e.rotation_period }</td>

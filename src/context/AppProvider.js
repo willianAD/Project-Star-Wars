@@ -5,10 +5,26 @@ import AppContext from './AppContext';
 function AppProvider({ children }) {
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
+  const [filterPlanet, setFilters] = useState([]);
 
   const handleName = ({ target }) => {
     setName(target.value);
   };
+
+  const filterName = () => {
+    const filterDataName = data
+      .filter((e) => e.name.toLowerCase().includes(name.toLowerCase()));
+    setFilters(filterDataName);
+  };
+
+  useEffect(() => {
+    if (name.length > 0) {
+      filterName();
+    } else {
+      setFilters(data);
+    }
+    console.log(filterPlanet);
+  }, [name]);
 
   useEffect(() => {
     const requestAPI = async () => {
@@ -16,6 +32,7 @@ function AppProvider({ children }) {
         const response = await fetch('https://swapi.dev/api/planets');
         const { results } = await response.json();
         setData(results);
+        setFilters(results);
       } catch (error) {
         throw new Error(error);
       }
@@ -27,6 +44,8 @@ function AppProvider({ children }) {
     data,
     name,
     handleName,
+    filterPlanet,
+    setFilters,
   };
 
   return (
