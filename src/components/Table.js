@@ -13,10 +13,17 @@ export default function Table() {
   };
 
   const buttonClick = () => {
+    const { column, quantity, number } = inputs;
+    const obj = { column, quantity, number };
     filterOperator();
-    setSaveFilters([...saveFilters,
-      `${inputs.column}   ${inputs.quantity}   ${inputs.number}`]);
-    setSelect((columns) => columns.filter((column) => column !== inputs.column));
+    setSaveFilters([...saveFilters, obj]);
+    setSelect((col) => col.filter((e) => e !== inputs.column));
+    setInputs({
+      name: '',
+      column: 'population',
+      quantity: 'maior que',
+      number: 0,
+    });
   };
 
   const buttonRemoveFilters = () => {
@@ -26,8 +33,9 @@ export default function Table() {
       'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   };
 
-  const buttonRemoveOneFilter = () => {
-    setSaveFilters((remove) => remove.filter((e, i) => e !== saveFilters[i]));
+  const buttonRemoveOneFilter = (column) => {
+    setSaveFilters((remove) => remove.filter((e) => e !== column));
+    setSaveFilters([]);
     setFiltersPlanet(data);
   };
 
@@ -88,8 +96,15 @@ export default function Table() {
       </button>
       { saveFilters.map((e, i) => (
         <div key={ i } data-testid="filter">
-          <span>{ e }</span>
-          <button type="button" onClick={ buttonRemoveOneFilter }>X</button>
+          <span>{ e.column }</span>
+          <span>{ e.quantity }</span>
+          <span>{ e.number }</span>
+          <button
+            type="button"
+            onClick={ () => buttonRemoveOneFilter(e.column) }
+          >
+            X
+          </button>
         </div>
       ))}
       <table>
