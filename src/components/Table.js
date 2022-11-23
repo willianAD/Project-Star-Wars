@@ -2,15 +2,68 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 export default function Table() {
-  const { handleName, filterPlanet } = useContext(AppContext);
-  // const [filterPlanet, setFilters] = useState([]);
+  const { filterPlanet, setInputs, inputs, filterOperator } = useContext(AppContext);
+
+  const handleChange = ({ target }) => {
+    setInputs({ ...inputs, [target.name]: target.value });
+  };
+
+  const buttonClick = () => {
+    filterOperator();
+  };
 
   return (
     <>
       <h1>Projeto Star Wars Trybe</h1>
       <label htmlFor="name">
-        <input id="name" data-testid="name-filter" onChange={ handleName } />
+        <input
+          name="name"
+          id="name"
+          data-testid="name-filter"
+          onChange={ handleChange }
+        />
       </label>
+      <label htmlFor="select">
+        <select
+          name="column"
+          id="select"
+          data-testid="column-filter"
+          value={ inputs.column }
+          onChange={ handleChange }
+        >
+          <option value="population" id="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
+        </select>
+      </label>
+      <label htmlFor="select2">
+        <select
+          name="quantity"
+          id="select2"
+          data-testid="comparison-filter"
+          value={ inputs.quantity }
+          onChange={ handleChange }
+        >
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+      </label>
+      <label htmlFor="number">
+        <input
+          name="number"
+          id="number"
+          data-testid="value-filter"
+          type="number"
+          value={ inputs.number }
+          onChange={ handleChange }
+        />
+      </label>
+      <button type="button" data-testid="button-filter" onClick={ buttonClick }>
+        Filtrar
+      </button>
       <table>
         <thead>
           <tr>
