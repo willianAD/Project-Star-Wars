@@ -1,8 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 export default function Table() {
-  const { filterPlanet, setInputs, inputs, filterOperator } = useContext(AppContext);
+  const { data, filterPlanet, setFiltersPlanet, setInputs, inputs,
+    filterOperator } = useContext(AppContext);
+  const [saveFilters, setSaveFilters] = useState([]);
+  const [select, setSelect] = useState([
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
 
   const handleChange = ({ target }) => {
     setInputs({ ...inputs, [target.name]: target.value });
@@ -10,6 +14,21 @@ export default function Table() {
 
   const buttonClick = () => {
     filterOperator();
+    setSaveFilters([...saveFilters,
+      `${inputs.column}   ${inputs.quantity}   ${inputs.number}`]);
+    setSelect((columns) => columns.filter((column) => column !== inputs.column));
+  };
+
+  const buttonRemoveFilters = () => {
+    setFiltersPlanet(data);
+    setSaveFilters([]);
+    setSelect([
+      'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+  };
+
+  const buttonRemoveOneFilter = () => {
+    setSaveFilters((remove) => remove.filter((e, i) => e !== saveFilters[i]));
+    setFiltersPlanet(data);
   };
 
   return (
@@ -31,11 +50,7 @@ export default function Table() {
           value={ inputs.column }
           onChange={ handleChange }
         >
-          <option value="population" id="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          { select.map((e, i) => <option key={ i } value={ e } id={ e }>{ e }</option>) }
         </select>
       </label>
       <label htmlFor="select2">
@@ -64,6 +79,19 @@ export default function Table() {
       <button type="button" data-testid="button-filter" onClick={ buttonClick }>
         Filtrar
       </button>
+      <button
+        type="button"
+        data-testid="button-remove-filters"
+        onClick={ buttonRemoveFilters }
+      >
+        Remover Filtros
+      </button>
+      { saveFilters.map((e, i) => (
+        <div key={ i } data-testid="filter">
+          <span>{ e }</span>
+          <button type="button" onClick={ buttonRemoveOneFilter }>X</button>
+        </div>
+      ))}
       <table>
         <thead>
           <tr>
