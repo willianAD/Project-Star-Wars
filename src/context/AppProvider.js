@@ -47,14 +47,10 @@ function AppProvider({ children }) {
 
   useEffect(() => {
     const requestAPI = async () => {
-      try {
-        const response = await fetch('https://swapi.dev/api/planets');
-        const { results } = await response.json();
-        setData(results);
-        setFiltersPlanet(results);
-      } catch (error) {
-        throw new Error(error);
-      }
+      const response = await fetch('https://swapi.dev/api/planets');
+      const { results } = await response.json();
+      setData(results);
+      setFiltersPlanet(results);
     };
     requestAPI();
   }, []);
