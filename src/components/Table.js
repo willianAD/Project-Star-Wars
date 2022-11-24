@@ -7,7 +7,7 @@ export default function Table() {
   const [saveFilters, setSaveFilters] = useState([]);
   const [select, setSelect] = useState([
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
-
+  const [order, setOrder] = useState({ column: 'population', sort: 'ASC' });
   const handleChange = ({ target }) => {
     setInputs({ ...inputs, [target.name]: target.value });
   };
@@ -35,8 +35,26 @@ export default function Table() {
 
   const buttonRemoveOneFilter = (column) => {
     setSaveFilters((remove) => remove.filter((e) => e !== column));
+    setSelect([...select, column]);
     setSaveFilters([]);
     setFiltersPlanet(data);
+  };
+
+  const buttonOrder = () => {
+    const orderAsc = (a, b) => +a[order.column] - +b[order.column];
+    const orderDesc = (a, b) => +b[order.column] - +a[order.column];
+
+    const orderData = filterPlanet.filter((e) => e[order.column] !== 'unknown');
+    const orderUnknown = filterPlanet.filter((e) => e[order.column] === 'unknown');
+
+    let orderPlanet = [];
+    if (order.sort === 'ASC') {
+      orderPlanet = orderData.sort(orderAsc);
+    } else {
+      orderPlanet = orderData.sort(orderDesc);
+    }
+    const orderResult = [...orderPlanet, ...orderUnknown];
+    setFiltersPlanet(orderResult);
   };
 
   return (
@@ -50,7 +68,9 @@ export default function Table() {
           onChange={ handleChange }
         />
       </label>
+      <p />
       <label htmlFor="select">
+        Coluna:
         <select
           name="column"
           id="select"
@@ -62,6 +82,7 @@ export default function Table() {
         </select>
       </label>
       <label htmlFor="select2">
+        Operador:
         <select
           name="quantity"
           id="select2"
@@ -86,6 +107,50 @@ export default function Table() {
       </label>
       <button type="button" data-testid="button-filter" onClick={ buttonClick }>
         Filtrar
+      </button>
+      <label htmlFor="selectOrder">
+        Ordenar:
+        <select
+          name="columnOrder"
+          id="selectOrder"
+          data-testid="column-sort"
+          onChange={ (e) => setOrder((prevState) => (
+            { ...prevState, column: e.target.value })) }
+          defaultValue={ order.column }
+        >
+          { select.map((e, i) => <option key={ i } value={ e } id={ e }>{ e }</option>) }
+        </select>
+      </label>
+      <label htmlFor="input-asc">
+        <input
+          id="input-asc"
+          type="radio"
+          data-testid="column-sort-input-asc"
+          name="sort"
+          value="ASC"
+          onChange={ (e) => setOrder((prevState) => (
+            { ...prevState, sort: e.target.value })) }
+        />
+        Ascendente
+      </label>
+      <label htmlFor="input-desc">
+        <input
+          id="input-desc"
+          type="radio"
+          data-testid="column-sort-input-desc"
+          name="sort"
+          value="DESC"
+          onChange={ (e) => setOrder((prevState) => (
+            { ...prevState, sort: e.target.value })) }
+        />
+        Descendente
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ buttonOrder }
+      >
+        Ordenar
       </button>
       <button
         type="button"
@@ -128,7 +193,7 @@ export default function Table() {
         <tbody>
           { filterPlanet.map((e) => (
             <tr key={ e.name }>
-              <td>{ e.name }</td>
+              <td data-testid="planet-name">{ e.name }</td>
               <td>{ e.rotation_period }</td>
               <td>{ e.orbital_period }</td>
               <td>{ e.diameter }</td>
