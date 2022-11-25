@@ -34,9 +34,8 @@ export default function Table() {
   };
 
   const buttonRemoveOneFilter = (column) => {
-    setSaveFilters((remove) => remove.filter((e) => e !== column));
+    setSaveFilters(saveFilters.filter((e) => e.column !== column));
     setSelect([...select, column]);
-    setSaveFilters([]);
     setFiltersPlanet(data);
   };
 
@@ -116,7 +115,7 @@ export default function Table() {
           data-testid="column-sort"
           onChange={ (e) => setOrder((prevState) => (
             { ...prevState, column: e.target.value })) }
-          defaultValue={ order.column }
+          value={ order.column }
         >
           { select.map((e, i) => <option key={ i } value={ e } id={ e }>{ e }</option>) }
         </select>

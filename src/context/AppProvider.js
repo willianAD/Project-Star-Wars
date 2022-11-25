@@ -14,21 +14,15 @@ function AppProvider({ children }) {
 
   const filterOperator = () => {
     let filterByQuantity = [];
-    switch (inputs.quantity) {
-    case 'maior que':
+    if (inputs.quantity === 'maior que') {
       filterByQuantity = filterPlanet.filter((e) => +e[inputs.column] > +inputs.number);
-      break;
-    case 'menor que':
+    } else if (inputs.quantity === 'menor que') {
       filterByQuantity = filterPlanet.filter((e) => +e[inputs.column] < +inputs.number);
-      break;
-    case 'igual a':
+    } else {
       filterByQuantity = filterPlanet.filter((e) => +e[inputs.column] === +inputs.number);
-      break;
-    default:
-      filterByQuantity = filterPlanet;
-      break;
     }
     setFiltersPlanet(filterByQuantity);
+    return filterByQuantity;
   };
 
   const filterName = () => {
