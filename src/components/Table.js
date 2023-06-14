@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
+/* eslint-disable react/jsx-max-depth */
 import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
+import logo from '../images/logo.gif';
 
 export default function Table() {
   const { data, filterPlanet, setFiltersPlanet, setInputs, inputs,
@@ -57,123 +60,133 @@ export default function Table() {
   };
 
   return (
-    <>
-      <h1>Projeto Star Wars Trybe</h1>
-      <label htmlFor="name">
-        <input
-          name="name"
-          id="name"
-          data-testid="name-filter"
-          onChange={ handleChange }
-        />
-      </label>
-      <p />
-      <label htmlFor="select">
-        Coluna:
-        <select
-          name="column"
-          id="select"
-          data-testid="column-filter"
-          value={ inputs.column }
-          onChange={ handleChange }
-        >
-          { select.map((e, i) => <option key={ i } value={ e } id={ e }>{ e }</option>) }
-        </select>
-      </label>
-      <label htmlFor="select2">
-        Operador:
-        <select
-          name="quantity"
-          id="select2"
-          data-testid="comparison-filter"
-          value={ inputs.quantity }
-          onChange={ handleChange }
-        >
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
-        </select>
-      </label>
-      <label htmlFor="number">
-        <input
-          name="number"
-          id="number"
-          data-testid="value-filter"
-          type="number"
-          value={ inputs.number }
-          onChange={ handleChange }
-        />
-      </label>
-      <button type="button" data-testid="button-filter" onClick={ buttonClick }>
-        Filtrar
-      </button>
-      <label htmlFor="selectOrder">
-        Ordenar:
-        <select
-          name="columnOrder"
-          id="selectOrder"
-          data-testid="column-sort"
-          onChange={ (e) => setOrder((prevState) => (
-            { ...prevState, column: e.target.value })) }
-          value={ order.column }
-        >
-          { select.map((e, i) => <option key={ i } value={ e } id={ e }>{ e }</option>) }
-        </select>
-      </label>
-      <label htmlFor="input-asc">
-        <input
-          id="input-asc"
-          type="radio"
-          data-testid="column-sort-input-asc"
-          name="sort"
-          value="ASC"
-          onChange={ (e) => setOrder((prevState) => (
-            { ...prevState, sort: e.target.value })) }
-        />
-        Ascendente
-      </label>
-      <label htmlFor="input-desc">
-        <input
-          id="input-desc"
-          type="radio"
-          data-testid="column-sort-input-desc"
-          name="sort"
-          value="DESC"
-          onChange={ (e) => setOrder((prevState) => (
-            { ...prevState, sort: e.target.value })) }
-        />
-        Descendente
-      </label>
-      <button
-        type="button"
-        data-testid="column-sort-button"
-        onClick={ buttonOrder }
-      >
-        Ordenar
-      </button>
-      <button
-        type="button"
-        data-testid="button-remove-filters"
-        onClick={ buttonRemoveFilters }
-      >
-        Remover Filtros
-      </button>
-      { saveFilters.map((e, i) => (
-        <div key={ i } data-testid="filter">
-          <span>{ e.column }</span>
-          <span>{ e.quantity }</span>
-          <span>{ e.number }</span>
+    <div className="div-pai">
+      <div className="div-img">
+        <img src={ logo } alt="logo" />
+      </div>
+      <div className="div-body">
+        <div className="div-search">
+          <label htmlFor="name" className="label-search">
+            <input
+              name="name"
+              id="name"
+              data-testid="name-filter"
+              className="name-filter"
+              onChange={ handleChange }
+            />
+          </label>
+        </div>
+        <div className="div-search-filters">
+          <label htmlFor="select">
+            Coluna:
+            <select
+              name="column"
+              data-testid="column-filter"
+              id="select"
+              value={ inputs.column }
+              onChange={ handleChange }
+            >
+              { select
+                .map((e, i) => <option key={ i } value={ e } id={ e }>{ e }</option>) }
+            </select>
+          </label>
+          <label htmlFor="select2">
+            Operador:
+            <select
+              name="quantity"
+              id="select2"
+              data-testid="comparison-filter"
+              value={ inputs.quantity }
+              onChange={ handleChange }
+            >
+              <option value="maior que">maior que</option>
+              <option value="menor que">menor que</option>
+              <option value="igual a">igual a</option>
+            </select>
+          </label>
+          <label htmlFor="number">
+            <input
+              name="number"
+              id="number"
+              data-testid="value-filter"
+              type="number"
+              value={ inputs.number }
+              onChange={ handleChange }
+            />
+          </label>
+          <button type="button" data-testid="button-filter" onClick={ buttonClick }>
+            Filtrar
+          </button>
+          <label htmlFor="selectOrder">
+            Ordenar:
+            <select
+              name="columnOrder"
+              id="selectOrder"
+              data-testid="column-sort"
+              onChange={ (e) => setOrder((prevState) => (
+                { ...prevState, column: e.target.value })) }
+              value={ order.column }
+            >
+              { select
+                .map((e, i) => <option key={ i } value={ e } id={ e }>{ e }</option>) }
+            </select>
+          </label>
+          <label htmlFor="input-asc">
+            <input
+              id="input-asc"
+              type="radio"
+              data-testid="column-sort-input-asc"
+              className="column-sort-input"
+              name="sort"
+              value="ASC"
+              onChange={ (e) => setOrder((prevState) => (
+                { ...prevState, sort: e.target.value })) }
+            />
+            Ascendente
+          </label>
+          <label htmlFor="input-desc">
+            <input
+              id="input-desc"
+              type="radio"
+              data-testid="column-sort-input-desc"
+              className="column-sort-input"
+              name="sort"
+              value="DESC"
+              onChange={ (e) => setOrder((prevState) => (
+                { ...prevState, sort: e.target.value })) }
+            />
+            Descendente
+          </label>
           <button
             type="button"
-            onClick={ () => buttonRemoveOneFilter(e.column) }
+            data-testid="column-sort-button"
+            onClick={ buttonOrder }
           >
-            X
+            Ordenar
           </button>
+          <button
+            type="button"
+            data-testid="button-remove-filters"
+            onClick={ buttonRemoveFilters }
+          >
+            Remover Filtros
+          </button>
+          { saveFilters.map((e, i) => (
+            <div key={ i } data-testid="filter">
+              <span>{ e.column }</span>
+              <span>{ e.quantity }</span>
+              <span>{ e.number }</span>
+              <button
+                type="button"
+                onClick={ () => buttonRemoveOneFilter(e.column) }
+              >
+                X
+              </button>
+            </div>
+          ))}
         </div>
-      ))}
-      <table>
-        <thead>
-          <tr>
+        <table>
+          <tr className="tr-header">
             <th>Nome</th>
             <th>Rotation Period</th>
             <th>Orbital Period</th>
@@ -188,27 +201,27 @@ export default function Table() {
             <th>Edited</th>
             <th>URL</th>
           </tr>
-        </thead>
-        <tbody>
-          { filterPlanet.map((e) => (
-            <tr key={ e.name }>
-              <td data-testid="planet-name">{ e.name }</td>
-              <td>{ e.rotation_period }</td>
-              <td>{ e.orbital_period }</td>
-              <td>{ e.diameter }</td>
-              <td>{ e.climate }</td>
-              <td>{ e.gravity }</td>
-              <td>{ e.terrain }</td>
-              <td>{ e.surface_water }</td>
-              <td>{ e.population }</td>
-              <td>{ e.films }</td>
-              <td>{ e.created }</td>
-              <td>{ e.edited }</td>
-              <td>{ e.url }</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
+          <tbody>
+            { filterPlanet.map((e) => (
+              <tr key={ e.name } className="planet-name">
+                <td data-testid="planet-name">{ e.name }</td>
+                <td>{ e.rotation_period }</td>
+                <td>{ e.orbital_period }</td>
+                <td>{ e.diameter }</td>
+                <td>{ e.climate }</td>
+                <td>{ e.gravity }</td>
+                <td>{ e.terrain }</td>
+                <td>{ e.surface_water }</td>
+                <td>{ e.population }</td>
+                <td>{ e.films }</td>
+                <td>{ e.created }</td>
+                <td>{ e.edited }</td>
+                <td>{ e.url }</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
